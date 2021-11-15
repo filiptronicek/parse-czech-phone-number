@@ -13,17 +13,16 @@ interface ParsedNumber {
 
 /**
  * @param phoneNumber the phone number to parse
+ * @param prefferedCountryCode an optional country code to be used if one is not specified
  * @returns an object with two values: `prefix` and `numberPart`
  */
 const parsePhoneNumber = (phoneNumber: string, prefferedCountryCode = 420): ParsedNumber => {
-
     if (!phoneNumber.includes('+') || phoneNumber.substring(0, 2) === '00') {
         if (phoneNumber.indexOf('00') === 0) {
             phoneNumber = phoneNumber.replace(/00\d{3}/, '');
         }
         phoneNumber = `+${prefferedCountryCode} ${phoneNumber}`;
     }
-
     phoneNumber = phoneNumber.replaceAll(' ', '');
 
     if (phoneNumber.length < 9 || !isMobilePhone(phoneNumber, ['cs-CZ', 'sk-SK'])) {
@@ -33,6 +32,7 @@ const parsePhoneNumber = (phoneNumber: string, prefferedCountryCode = 420): Pars
 
     const prefix = phoneNumber.substring(0, 4);
     const numberPart = phoneNumber.substring(4);
+
     return { prefix, numberPart }
 }
 
