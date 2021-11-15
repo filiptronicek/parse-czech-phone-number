@@ -8,7 +8,7 @@ interface ParsedNumber {
     /**
      * `prefix` is the '123456789' part of '+420 123456789'.
      */
-    numberPart: string;
+    numberParts: string[];
 }
 
 /**
@@ -26,23 +26,22 @@ const parsePhoneNumber = (phoneNumber: string, prefferedCountryCode = 420): Pars
     phoneNumber = phoneNumber.replaceAll(' ', '');
 
     if (phoneNumber.length < 9 || !isMobilePhone(phoneNumber, ['cs-CZ', 'sk-SK'])) {
-        console.log(phoneNumber)
         throw new Error("The provided phone number has an invalid format");
     }
 
     const prefix = phoneNumber.substring(0, 4);
-    const numberPart = phoneNumber.substring(4);
+    const numberParts = phoneNumber.substring(4).split(/(?<=^(?:.{3})+)(?!$)/);
 
-    return { prefix, numberPart }
+    return { prefix, numberParts }
 }
 
 /**
  * @param phoneNumber the phone number to format
  * @returns a human-readable string representing the phone number, e.g. `+420 123 456 789`
  */
-const formatMobilePhone = (phoneNumber: string): string => {
-    const { prefix, numberPart } = parsePhoneNumber(phoneNumber);
-    phoneNumber = `${prefix} ${numberPart.substring(0, 3)} ${numberPart.substring(3, 6)} ${numberPart.substring(6, 9)}`;
+const formatMobilePhone = (phoneNumber): string => {
+    const { prefix, numberParts } = parsePhoneNumber(phoneNumber);
+    phoneNumber = `${prefix} ${numberParts.join(" ")}`;
     return phoneNumber;
 };
 
