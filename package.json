@@ -1,0 +1,19 @@
+{
+  "name": "parse-czech-phone-number",
+  "version": "1.0.0",
+  "description": "A small package for parsing phone numbers",
+  "main": "dist/index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/filiptronicek/parse-czech-phone-number.git"
+  },
+  "author": "Filip Troníček",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/filiptronicek/parse-czech-phone-number/issues"
+  },
+  "homepage": "https://github.com/filiptronicek/parse-czech-phone-number#readme"
+}
