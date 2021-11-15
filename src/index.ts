@@ -1,3 +1,5 @@
+import isMobilePhone from 'validator/lib/isMobilePhone';
+
 interface ParsedNumber {
     /**
      * `prefix` is the '+420' part of '+420 123456789'.
@@ -13,15 +15,21 @@ interface ParsedNumber {
  * @param phoneNumber the phone number to parse
  * @returns an object with two values: `prefix` and `numberPart`
  */
-const parsePhoneNumber = (phoneNumber: string): ParsedNumber => {
+const parsePhoneNumber = (phoneNumber: string, prefferedCountryCode = 420): ParsedNumber => {
+
     if (!phoneNumber.includes('+') || phoneNumber.substring(0, 2) === '00') {
         if (phoneNumber.indexOf('00') === 0) {
-            phoneNumber = phoneNumber.replace('00', '');
+            phoneNumber = phoneNumber.replace(/00\d{3}/, '');
         }
-        phoneNumber = `+420 ${phoneNumber}`;
+        phoneNumber = `+${prefferedCountryCode} ${phoneNumber}`;
     }
 
     phoneNumber = phoneNumber.replaceAll(' ', '');
+
+    if (phoneNumber.length < 9 || !isMobilePhone(phoneNumber, ['cs-CZ', 'sk-SK'])) {
+        console.log(phoneNumber)
+        throw new Error("The provided phone number has an invalid format");
+    }
 
     const prefix = phoneNumber.substring(0, 4);
     const numberPart = phoneNumber.substring(4);
